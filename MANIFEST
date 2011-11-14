@@ -1,17 +1,10 @@
+.cvsignore
 Changes
-inc/Module/Install.pm
-inc/Module/Install/Base.pm
-inc/Module/Install/Can.pm
-inc/Module/Install/Fetch.pm
-inc/Module/Install/Makefile.pm
-inc/Module/Install/Metadata.pm
-inc/Module/Install/Win32.pm
-inc/Module/Install/WriteAll.pm
-lib/Parse/Syslog/Line.pm
-Makefile.PL
-MANIFEST			This list of files
+MANIFEST
 META.yml
+Makefile.PL
 README
+lib/Parse/Syslog/Line.pm
 t/00-load.t
 t/01-parse.t
 t/boilerplate.t
