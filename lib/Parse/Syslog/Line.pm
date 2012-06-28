@@ -1,3 +1,5 @@
+# ABSTRACT: Simple syslog line parser
+
 package Parse::Syslog::Line;
 
 use warnings;
@@ -8,53 +10,9 @@ use Readonly;
 use DateTime;
 use DateTime::Format::HTTP;
 
-=head1 NAME
 
-Parse::Syslog::Line - Parses Syslog Lines into Hashes
+our $VERSION = '0.8';
 
-=head1 VERSION
-
-Version 0.7
-
-=cut
-
-our $VERSION = '0.7';
-
-=head1 SYNOPSIS
-
-I wanted a very simple log parser for network based syslog input.
-Nothing existed that simply took a line and returned a hash ref all
-parsed out.
-
-    use Parse::Syslog::Line qw(parse_syslog_line);
-
-    my $href = parse_syslog_line( $msg );
-	#
-	# $href = {
-	#		preamble		=> '13',	
-	#		priority		=> 'notice',	
-	#		priority_int	=> 5,	
-	#		facility		=> 'user',
-	#		facility_int	=> 8,
-	#		date			=> 'YYYY-MM-DD',
-	#		time			=> 'HH::MM:SS',
-	#		datetime_str	=> 'YYYY-MM-DD HH:MM:SS',
-	#		datetime_obj	=> new DateTime(), # If installed
-	#		datetime_raw	=> 'Feb 17 11:12:13'
-	#		host_raw		=> 'hostname',  # Hostname as it appeared in the message
-	#		host		 	=> 'hostname',  # Hostname without domain
-	#		domain			=> 'blah.com',  # if provided
-	#		program_raw		=> 'sshd(blah)[pid]',
-	#		program_name	=> 'sshd',
-	#		program_sub		=> 'pam_unix',
-	#		program_pid		=> 20345,
-	#		content			=> 'the rest of the message'
-	#		message			=> 'program[pid]: the rest of the message',
-	#		message_raw		=> 'The message as it was passed',
-	# };
-    ...
-
-=cut
 
 Readonly my %INT_PRIORITY => (
 	'emerg'			=> 0,
@@ -116,20 +74,6 @@ Readonly our %CONV_MASK => (
 	facility		=> 0x03f8,
 );
 
-=head1 EXPORT
-
-Exported by default:
-       parse_syslog_line( $one_line_of_syslog_message );
-
-Optional Exports:
-  :preamble
-       preamble_priority
-       preamble_facility
-
-  :constants
-       %LOG_FACILITY
-       %LOG_PRIORITY
-=cut
 
 our @ISA = qw(Exporter);
 our @EXPORT = qw(parse_syslog_line);
@@ -139,7 +83,7 @@ our @EXPORT_OK = qw(
 	%LOG_FACILITY %LOG_PRIORITY
 );
 our @EXPORT_TAGS = (
-	constants		=> [ qw( %LOG_FACILITY %LOG_PRIORITY ) ],	
+	constants		=> [ qw( %LOG_FACILITY %LOG_PRIORITY ) ],
 	preamble		=> [ qw(preamble_priority preamble_facility) ],
 );
 
@@ -161,13 +105,6 @@ Readonly my %REGEXP => (
 	message			=> qr/\d+(?:\:\d+){1,2}\s+\S+\s+([^:]+:\s+.*)/,
 );
 
-=head1 FUNCTIONS
-
-=head2 parse_syslog_line
-
-Returns a hash reference of syslog message parsed data.
-
-=cut
 
 sub parse_syslog_line {
 	my ($raw_string) = @_;
@@ -190,7 +127,7 @@ sub parse_syslog_line {
 
 		@msg{qw(priority priority_int)} = @{ $priority }{qw(as_text as_int)};
 		@msg{qw(facility facility_int)} = @{ $facility }{qw(as_text as_int)};
-		
+
 	}
 	else {
 		foreach my $var (qw(preamble priority priority_int facility facility_int)) {
@@ -235,7 +172,7 @@ sub parse_syslog_line {
 			$msg{$var} = undef;
 		}
 	}
-	
+
 	#
 	# Parse the Program portion
 	my ($progStr) = ($raw_string =~ /$REGEXP{program_raw}/);
@@ -244,7 +181,7 @@ sub parse_syslog_line {
 		foreach my $var (qw(program_name program_pid program_sub)) {
 			($msg{$var}) = ($progStr =~ /$REGEXP{$var}/);
 		}
-	}	
+	}
 	else {
 		foreach my $var (qw(program_raw program_name program_pid program_sub)) {
 			$msg{$var} = undef;
@@ -261,18 +198,6 @@ sub parse_syslog_line {
 	return \%msg;
 }
 
-=head2 preamble_priority 
-
-Takes the Integer portion of the syslog messsage and returns
-a hash reference as such:
-
-	$prioRef = {
-		'preamble'	=> 13
-		'as_text'	=> 'notice',
-		'as_int' 	=> 5,
-	};
-
-=cut
 
 sub preamble_priority {
 	my $preamble = shift;
@@ -285,22 +210,10 @@ sub preamble_priority {
 
 	$hash{as_int} = $preamble & $CONV_MASK{priority};
 	$hash{as_text} = $LOG_PRIORITY{ $hash{as_int} };
-	
+
 	return \%hash;
 }
 
-=head2 preamble_facility 
-
-Takes the Integer portion of the syslog messsage and returns
-a hash reference as such:
-
-	$facRef = {
-		'preamble'	=> 13
-		'as_text'	=> 'user',
-		'as_int' 	=> 8,
-	};
-
-=cut
 
 sub preamble_facility {
 	my $preamble = shift;
@@ -313,11 +226,109 @@ sub preamble_facility {
 
 	$hash{as_int} = $preamble & $CONV_MASK{facility};
 	$hash{as_text} = $LOG_FACILITY{ $hash{as_int} };
-	
+
 	return \%hash;
 
 }
 
+
+
+1; # End of Parse::Syslog::Line
+
+__END__
+=pod
+
+=head1 NAME
+
+Parse::Syslog::Line - Simple syslog line parser
+
+=head1 VERSION
+
+version 0.8
+
+=head1 SYNOPSIS
+
+I wanted a very simple log parser for network based syslog input.
+Nothing existed that simply took a line and returned a hash ref all
+parsed out.
+
+    use Parse::Syslog::Line qw(parse_syslog_line);
+
+    my $href = parse_syslog_line( $msg );
+	#
+	# $href = {
+	#		preamble		=> '13',
+	#		priority		=> 'notice',
+	#		priority_int	=> 5,
+	#		facility		=> 'user',
+	#		facility_int	=> 8,
+	#		date			=> 'YYYY-MM-DD',
+	#		time			=> 'HH::MM:SS',
+	#		datetime_str	=> 'YYYY-MM-DD HH:MM:SS',
+	#		datetime_obj	=> new DateTime(), # If installed
+	#		datetime_raw	=> 'Feb 17 11:12:13'
+	#		host_raw		=> 'hostname',  # Hostname as it appeared in the message
+	#		host		 	=> 'hostname',  # Hostname without domain
+	#		domain			=> 'blah.com',  # if provided
+	#		program_raw		=> 'sshd(blah)[pid]',
+	#		program_name	=> 'sshd',
+	#		program_sub		=> 'pam_unix',
+	#		program_pid		=> 20345,
+	#		content			=> 'the rest of the message'
+	#		message			=> 'program[pid]: the rest of the message',
+	#		message_raw		=> 'The message as it was passed',
+	# };
+    ...
+
+=head1 NAME
+
+Parse::Syslog::Line - Parses Syslog Lines into Hashes
+
+=head1 VERSION
+
+Version 0.8
+
+=head1 EXPORT
+
+Exported by default:
+       parse_syslog_line( $one_line_of_syslog_message );
+
+Optional Exports:
+  :preamble
+       preamble_priority
+       preamble_facility
+
+  :constants
+       %LOG_FACILITY
+       %LOG_PRIORITY
+
+=head1 FUNCTIONS
+
+=head2 parse_syslog_line
+
+Returns a hash reference of syslog message parsed data.
+
+=head2 preamble_priority
+
+Takes the Integer portion of the syslog messsage and returns
+a hash reference as such:
+
+	$prioRef = {
+		'preamble'	=> 13
+		'as_text'	=> 'notice',
+		'as_int' 	=> 5,
+	};
+
+=head2 preamble_facility
+
+Takes the Integer portion of the syslog messsage and returns
+a hash reference as such:
+
+	$facRef = {
+		'preamble'	=> 13
+		'as_text'	=> 'user',
+		'as_int' 	=> 8,
+	};
 
 =head1 AUTHOR
 
@@ -372,6 +383,17 @@ Copyright 2007 Brad Lhotsky, all rights reserved.
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.
 
+=head1 AUTHOR
+
+Brad Lhotsky <brad@divisionbyzero.net>
+
+=head1 COPYRIGHT AND LICENSE
+
+This software is Copyright (c) 2012 by Brad Lhotsky.
+
+This is free software, licensed under:
+
+  The (three-clause) BSD License
+
 =cut
 
-1; # End of Parse::Syslog::Line

@@ -1,14 +1,61 @@
-use inc::Module::Install;
 
-# Module Information
-name			'Parse-Syslog-Line';
-perl_version	'5.008';
-all_from		'lib/Parse/Syslog/Line.pm';
+use strict;
+use warnings;
 
-# Requirements
-test_requires	'Test::More'				=> 0;
-requires		'Readonly'					=> 0;
-requires		'DateTime'					=> 0;
-requires		'DateTime::Format::HTTP'	=> 0;
+use 5.006;
 
-WriteAll();
+use ExtUtils::MakeMaker 6.30;
+
+
+
+my %WriteMakefileArgs = (
+  "ABSTRACT" => "Simple syslog line parser",
+  "AUTHOR" => "Brad Lhotsky <brad\@divisionbyzero.net>",
+  "BUILD_REQUIRES" => {
+    "Data::Dumper" => 0,
+    "File::Find" => 0,
+    "File::Temp" => 0,
+    "Test::More" => 0
+  },
+  "CONFIGURE_REQUIRES" => {
+    "ExtUtils::MakeMaker" => "6.30"
+  },
+  "DISTNAME" => "Parse-Syslog-Line",
+  "EXE_FILES" => [],
+  "LICENSE" => "bsd",
+  "NAME" => "Parse::Syslog::Line",
+  "PREREQ_PM" => {
+    "DateTime" => 0,
+    "DateTime::Format::HTTP" => 0,
+    "Exporter" => 0,
+    "Readonly" => 0,
+    "strict" => 0,
+    "warnings" => 0
+  },
+  "VERSION" => "0.8",
+  "test" => {
+    "TESTS" => "t/*.t"
+  }
+);
+
+
+unless ( eval { ExtUtils::MakeMaker->VERSION(6.56) } ) {
+  my $br = delete $WriteMakefileArgs{BUILD_REQUIRES};
+  my $pp = $WriteMakefileArgs{PREREQ_PM};
+  for my $mod ( keys %$br ) {
+    if ( exists $pp->{$mod} ) {
+      $pp->{$mod} = $br->{$mod} if $br->{$mod} > $pp->{$mod};
+    }
+    else {
+      $pp->{$mod} = $br->{$mod};
+    }
+  }
+}
+
+delete $WriteMakefileArgs{CONFIGURE_REQUIRES}
+  unless eval { ExtUtils::MakeMaker->VERSION(6.52) };
+
+WriteMakefile(%WriteMakefileArgs);
+
+
+
