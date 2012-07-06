@@ -24,7 +24,7 @@ requires:
   perl: 5.006
   strict: 0
   warnings: 0
-version: 0.8
+version: 0.9
 x_Dist_Zilla:
   plugins:
     -
@@ -139,6 +139,22 @@ x_Dist_Zilla:
       class: Dist::Zilla::Plugin::Test::Compile
       name: Test::Compile
       version: 1.112820
+    -
+      class: Dist::Zilla::Plugin::Git::Check
+      name: '@Git/Check'
+      version: 1.121800
+    -
+      class: Dist::Zilla::Plugin::Git::Commit
+      name: '@Git/Commit'
+      version: 1.121800
+    -
+      class: Dist::Zilla::Plugin::Git::Tag
+      name: '@Git/Tag'
+      version: 1.121800
+    -
+      class: Dist::Zilla::Plugin::Git::Push
+      name: '@Git/Push'
+      version: 1.121800
     -
       class: Dist::Zilla::Plugin::InstallRelease
       name: InstallRelease
