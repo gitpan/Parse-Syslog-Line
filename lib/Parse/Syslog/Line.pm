@@ -11,7 +11,7 @@ use DateTime;
 use DateTime::Format::HTTP;
 
 
-our $VERSION = '0.9';
+our $VERSION = '1.0';
 our $DateTimeCreate = 1;
 
 
@@ -249,7 +249,7 @@ Parse::Syslog::Line - Simple syslog line parser
 
 =head1 VERSION
 
-version 0.9
+version 1.0
 
 =head1 SYNOPSIS
 
@@ -293,7 +293,7 @@ Parse::Syslog::Line - Parses Syslog Lines into Hashes
 
 =head1 VERSION
 
-Version 0.9
+Version 1.0
 
 =head1 EXPORT
 
