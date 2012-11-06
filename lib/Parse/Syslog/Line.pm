@@ -10,8 +10,7 @@ use Readonly;
 use DateTime;
 use DateTime::Format::HTTP;
 
-
-our $VERSION = '1.0';
+our $VERSION = '1.1';
 our $DateTimeCreate = 1;
 
 
@@ -102,7 +101,6 @@ Readonly my %REGEXP => (
     program_name    => qr/^([^\[\(]+)/,
     program_sub     => qr/\S+\(([^\)]+)\)/,
     program_pid     => qr/\S+\[([^\]]+)\]/,
-    content         => qr/\s+(.*)/,
 );
 
 
@@ -193,10 +191,10 @@ sub parse_syslog_line {
         }
     }
 
-    foreach my $var (qw(content)) {
-        ($msg{$var}) = ($raw_string =~ /$REGEXP{$var}/);
-    }
-    $msg{message} = "$msg{program_raw}: $msg{content}";
+    # Strip leading spaces from the string
+    $raw_string =~ s/^\s+//;
+    $msg{content} = $raw_string;
+    $msg{message} = defined $msg{program_raw} ? "$msg{program_raw}: $msg{content}" : $msg{content};
 
     #
     # Return our hash reference!
@@ -241,6 +239,7 @@ sub preamble_facility {
 1; # End of Parse::Syslog::Line
 
 __END__
+
 =pod
 
 =head1 NAME
@@ -249,7 +248,7 @@ Parse::Syslog::Line - Simple syslog line parser
 
 =head1 VERSION
 
-version 1.0
+version 1.1
 
 =head1 SYNOPSIS
 
@@ -286,14 +285,6 @@ parsed out.
     #       message_raw     => 'The message as it was passed',
     # };
     ...
-
-=head1 NAME
-
-Parse::Syslog::Line - Parses Syslog Lines into Hashes
-
-=head1 VERSION
-
-Version 1.0
 
 =head1 EXPORT
 
@@ -414,4 +405,3 @@ This is free software, licensed under:
   The (three-clause) BSD License
 
 =cut
-
