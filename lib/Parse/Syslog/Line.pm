@@ -10,7 +10,7 @@ use Readonly;
 use DateTime;
 use DateTime::Format::HTTP;
 
-our $VERSION = '1.1';
+our $VERSION = '1.2';
 our $DateTimeCreate = 1;
 
 
@@ -248,7 +248,7 @@ Parse::Syslog::Line - Simple syslog line parser
 
 =head1 VERSION
 
-version 1.1
+version 1.2
 
 =head1 SYNOPSIS
 
