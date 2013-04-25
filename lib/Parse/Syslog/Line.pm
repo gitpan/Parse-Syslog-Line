@@ -10,8 +10,9 @@ use Readonly;
 use DateTime;
 use DateTime::Format::HTTP;
 
-our $VERSION = '1.2';
+our $VERSION = '1.3';
 our $DateTimeCreate = 1;
+our $FmtDate;
 
 
 Readonly my %INT_PRIORITY => (
@@ -132,21 +133,22 @@ sub parse_syslog_line {
     #
     # Handle Date/Time
     if( $raw_string =~ s/$REGEXP{date}//) {
-        $msg{datetime_raw} = $1;
+        $msg{date_raw} = $1;
 
         # Only parse the DatetTime if we're configured to do so
-        if ($DateTimeCreate) {
-            if( defined $msg{datetime_raw} && length($msg{datetime_raw}) > 0 ) {
-                my $dt = DateTime::Format::HTTP->parse_datetime( $msg{datetime_raw} );
-                $msg{date}          = $dt->ymd('-');
-                $msg{time}          = $dt->hms;
-                $msg{datetime_str}  = $dt->ymd('-') . ' ' . $dt->hms;
-                $msg{datetime_obj}  = $dt;
-            }
-            else {
-                foreach my $var (qw(date time datetime_str datetime_obj datetime_raw)) {
-                    $msg{$var} = undef;
-                }
+        if ($DateTimeCreate and defined($msg{date_raw}) and length($msg{date_raw}) > 0 ) {
+            my $dt = DateTime::Format::HTTP->parse_datetime( $msg{date_raw} );
+            $msg{date}          = $dt->ymd('-');
+            $msg{time}          = $dt->hms;
+            $msg{epoch}         = $dt->epoch;
+            $msg{date_str}      = $dt->ymd('-') . ' ' . $dt->hms;
+            $msg{datetime_obj}  = $dt;
+        } elsif ($FmtDate and defined($msg{date_raw}) and length($msg{date_raw}) > 0 ) {
+            ($msg{date}, $msg{time}, $msg{epoch}, $msg{date_str}) = $FmtDate->($msg{date_raw});
+            $msg{datetime_obj} = undef;
+        } else {
+            foreach my $var (qw(date time epoch date_str datetime_obj)) {
+                $msg{$var} = undef;
             }
         }
     }
@@ -235,7 +237,6 @@ sub preamble_facility {
 }
 
 
-
 1; # End of Parse::Syslog::Line
 
 __END__
@@ -248,7 +249,7 @@ Parse::Syslog::Line - Simple syslog line parser
 
 =head1 VERSION
 
-version 1.2
+version 1.3
 
 =head1 SYNOPSIS
 
@@ -309,7 +310,7 @@ returned in the $m->{datetime_obj} field.  Otherwise, this will be skipped.
 
 Usage:
 
-  our $Parse::Syslog::Line::DateTimeCreate = 0;
+  $Parse::Syslog::Line::DateTimeCreate = 0;
 
 =head1 FUNCTIONS
 
@@ -339,25 +340,13 @@ a hash reference as such:
         'as_int'    => 8,
     };
 
-=head1 AUTHOR
+=head1 DEVELOPMENT
 
-Brad Lhotsky, C<< <brad at divisionbyzero.net> >>
+This module is developed with Dist::Zilla.  To build from the repository, use Dist::Zilla:
 
-=head1 BUGS
-
-Please report any bugs or feature requests to
-C<bug-parse-syslog-line at rt.cpan.org>, or through the web interface at
-L<http://rt.cpan.org/NoAuth/ReportBug.html?Queue=Parse-Syslog-Line>.
-I will be notified, and then you'll automatically be notified of progress on
-your bug as I make changes.
-
-=head1 SUPPORT
-
-You can find documentation for this module with the perldoc command.
-
-    perldoc Parse::Syslog::Line
-
-You can also look for information at:
+    dzil authordeps |cpanm
+    dzil build
+    dzil test
 
 =over 4
 
@@ -384,6 +373,14 @@ L<http://search.cpan.org/dist/Parse-Syslog-Line>
 =back
 
 =head1 ACKNOWLEDGEMENTS
+
+=over 4
+
+=item Shawn Wilson
+
+Contribution of patch to support custom date parsing function
+
+=back
 
 =head1 COPYRIGHT & LICENSE
 
