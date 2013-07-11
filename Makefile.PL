@@ -23,6 +23,7 @@ my %WriteMakefileArgs = (
     "DateTime" => 0,
     "DateTime::Format::HTTP" => 0,
     "Exporter" => 0,
+    "HTTP::Date" => 0,
     "Readonly" => 0,
     "strict" => 0,
     "warnings" => 0
@@ -33,7 +34,7 @@ my %WriteMakefileArgs = (
     "File::Temp" => 0,
     "Test::More" => 0
   },
-  "VERSION" => "1.4",
+  "VERSION" => "1.5",
   "test" => {
     "TESTS" => "t/*.t"
   }
