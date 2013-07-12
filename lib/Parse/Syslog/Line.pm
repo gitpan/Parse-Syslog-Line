@@ -11,7 +11,7 @@ use DateTime;
 use DateTime::Format::HTTP;
 use HTTP::Date;
 
-our $VERSION = '1.5';
+our $VERSION = '1.6';
 our $DateTimeCreate = 1;
 our $FmtDate;
 our $EpochCreate = 0;
@@ -211,7 +211,7 @@ sub parse_syslog_line {
         }
         else {
             if ( $raw_string =~ s/$REGEXP{program_raw}// ) {
-                $msg{program_raw} = $1;
+                $msg{program_name} = $msg{program_raw} = $1;
             }
         }
     }
@@ -275,7 +275,7 @@ Parse::Syslog::Line - Simple syslog line parser
 
 =head1 VERSION
 
-version 1.5
+version 1.6
 
 =head1 SYNOPSIS
 
