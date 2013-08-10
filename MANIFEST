@@ -6,6 +6,7 @@ META.yml
 Makefile.PL
 README
 README.mkdn
+benchmarks/01-parse.pl
 dist.ini
 lib/Parse/Syslog/Line.pm
 t/00-compile.t
