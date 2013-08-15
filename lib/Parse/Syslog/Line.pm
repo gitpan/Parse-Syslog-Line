@@ -11,7 +11,7 @@ use DateTime;
 use DateTime::Format::HTTP;
 use HTTP::Date;
 
-our $VERSION        = '1.8';
+our $VERSION        = '1.9';
 
 our $DateTimeCreate    = 1;
 our $FmtDate;
@@ -21,7 +21,7 @@ our $PruneEmpty        = 0;
 our @PruneFields       = ();
 
 
-Readonly my %INT_PRIORITY => (
+my %INT_PRIORITY = (
     'emerg'         => 0,
     'alert'         => 1,
     'crit'          => 2,
@@ -32,7 +32,7 @@ Readonly my %INT_PRIORITY => (
     'debug'         => 7,
 );
 
-Readonly my %INT_FACILITY => (
+my %INT_FACILITY = (
     #
     # POSIX Facilities
     'kern'          => 0 << 3,
@@ -95,12 +95,12 @@ our @EXPORT_TAGS = (
 );
 
 # Regex to Support Matches
-Readonly my %RE => (
+ my %RE = (
     IPv4    => qr/(?:[0-9]{1,3}\.){3}[0-9]{1,3}/,
 );
 
 # Regex to Extract Data
-Readonly my %REGEXP => (
+my %REGEXP = (
     preamble        => qr/^\<(\d+)\>/,
     date            => qr/^(
             [a-zA-Z]{3}\s+[0-9]+            # Date: Mon  9
@@ -289,7 +289,7 @@ Parse::Syslog::Line - Simple syslog line parser
 
 =head1 VERSION
 
-version 1.8
+version 1.9
 
 =head1 SYNOPSIS
 

@@ -9,6 +9,7 @@ README.mkdn
 benchmarks/01-parse.pl
 dist.ini
 lib/Parse/Syslog/Line.pm
+profile/01-minimal.pl
 t/00-compile.t
 t/00-load.t
 t/01-parse.t
