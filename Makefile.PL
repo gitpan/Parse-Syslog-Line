@@ -20,11 +20,11 @@ my %WriteMakefileArgs = (
   "LICENSE" => "bsd",
   "NAME" => "Parse::Syslog::Line",
   "PREREQ_PM" => {
+    "Const::Fast" => 0,
     "DateTime" => 0,
     "DateTime::Format::HTTP" => 0,
     "Exporter" => 0,
     "HTTP::Date" => 0,
-    "Readonly" => 0,
     "strict" => 0,
     "warnings" => 0
   },
@@ -34,7 +34,7 @@ my %WriteMakefileArgs = (
     "File::Temp" => 0,
     "Test::More" => 0
   },
-  "VERSION" => "1.9",
+  "VERSION" => "2.0",
   "test" => {
     "TESTS" => "t/*.t"
   }
