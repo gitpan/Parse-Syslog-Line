@@ -21,7 +21,6 @@ my %WriteMakefileArgs = (
   "NAME" => "Parse::Syslog::Line",
   "PREREQ_PM" => {
     "Const::Fast" => 0,
-    "DateTime" => 0,
     "DateTime::Format::HTTP" => 0,
     "Exporter" => 0,
     "HTTP::Date" => 0,
@@ -30,11 +29,13 @@ my %WriteMakefileArgs = (
   },
   "TEST_REQUIRES" => {
     "Data::Dumper" => 0,
-    "File::Find" => 0,
-    "File::Temp" => 0,
+    "DateTime" => 0,
+    "File::Spec" => 0,
+    "IO::Handle" => 0,
+    "IPC::Open3" => 0,
     "Test::More" => 0
   },
-  "VERSION" => "2.1",
+  "VERSION" => "2.2",
   "test" => {
     "TESTS" => "t/*.t"
   }
