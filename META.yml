@@ -26,7 +26,10 @@ requires:
   perl: 5.010
   strict: 0
   warnings: 0
-version: 2.3
+resources:
+  homepage: https://github.com/reyjrar/Parse-Syslog-Line
+  repository: https://github.com/reyjrar/Parse-Syslog-Line.git
+version: 2.4
 x_Dist_Zilla:
   perl:
     version: 5.016002
@@ -178,6 +181,10 @@ x_Dist_Zilla:
       class: Dist::Zilla::Plugin::NextRelease
       name: NextRelease
       version: 4.300039
+    -
+      class: Dist::Zilla::Plugin::GithubMeta
+      name: GithubMeta
+      version: 0.42
     -
       class: Dist::Zilla::Plugin::FinderCode
       name: ':InstallModules'

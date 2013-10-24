@@ -49,7 +49,15 @@
       }
    },
    "release_status" : "stable",
-   "version" : "2.3",
+   "resources" : {
+      "homepage" : "https://github.com/reyjrar/Parse-Syslog-Line",
+      "repository" : {
+         "type" : "git",
+         "url" : "https://github.com/reyjrar/Parse-Syslog-Line.git",
+         "web" : "https://github.com/reyjrar/Parse-Syslog-Line"
+      }
+   },
+   "version" : "2.4",
    "x_Dist_Zilla" : {
       "perl" : {
          "version" : "5.016002"
@@ -242,6 +250,11 @@
             "class" : "Dist::Zilla::Plugin::NextRelease",
             "name" : "NextRelease",
             "version" : "4.300039"
+         },
+         {
+            "class" : "Dist::Zilla::Plugin::GithubMeta",
+            "name" : "GithubMeta",
+            "version" : "0.42"
          },
          {
             "class" : "Dist::Zilla::Plugin::FinderCode",
