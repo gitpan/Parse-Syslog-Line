@@ -10,7 +10,7 @@ use Const::Fast;
 use DateTime::Format::HTTP;
 use HTTP::Date;
 
-our $VERSION        = '2.5';
+our $VERSION        = '2.6';
 
 our $DateTimeCreate    = 1;
 our $ExtractProgram    = 1;
@@ -333,7 +333,7 @@ Parse::Syslog::Line - Simple syslog line parser
 
 =head1 VERSION
 
-version 2.5
+version 2.6
 
 =head1 SYNOPSIS
 

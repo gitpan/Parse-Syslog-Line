@@ -29,7 +29,7 @@ requires:
 resources:
   homepage: https://github.com/reyjrar/Parse-Syslog-Line
   repository: https://github.com/reyjrar/Parse-Syslog-Line.git
-version: 2.5
+version: 2.6
 x_Dist_Zilla:
   perl:
     version: 5.018001
