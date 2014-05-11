@@ -10,7 +10,7 @@ use Const::Fast;
 use DateTime::Format::HTTP;
 use HTTP::Date;
 
-our $VERSION        = '2.6';
+our $VERSION        = '2.7';
 
 our $DateTimeCreate    = 1;
 our $ExtractProgram    = 1;
@@ -109,6 +109,7 @@ my %REGEXP = (
                 (?:[0-9]{4}\s+)?                # Year: Because, Cisco
                 ([.*])?                         # Cisco adds a * for no ntp, and a . for configured but out of sync
                 [a-zA-Z]{3}\s+[0-9]+            # Date: Jan  1
+                (?:\s+[0-9]{4})?                # Year: Because, Cisco
                 \s+                             # Date Separator: spaces
                 [0-9]{1,2}(?:\:[0-9]{2}){1,2}   # Time: HH:MM or HH:MM:SS
                 (?:\.[0-9]{3})?                 # Time: .DDD ms resolution
@@ -135,6 +136,7 @@ my %REGEXP = (
                 (?:[0-9]{4}\s+)?                # Year: Because, Cisco
                 ([.*])?                         # Cisco adds a * for no ntp, and a . for configured but out of sync
                 [a-zA-Z]{3}\s+[0-9]+            # Date: Jan  1
+                (?:\s+[0-9]{4})?                # Year: Because, Cisco
                 \s+                             # Date Separator: spaces
                 [0-9]{1,2}(?:\:[0-9]{2}){1,2}   # Time: HH:MM or HH:MM:SS
                 (?:\.[0-9]{3})?                 # Time: .DDD ms resolution
@@ -333,7 +335,7 @@ Parse::Syslog::Line - Simple syslog line parser
 
 =head1 VERSION
 
-version 2.6
+version 2.7
 
 =head1 SYNOPSIS
 
