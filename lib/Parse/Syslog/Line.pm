@@ -10,7 +10,7 @@ use Const::Fast;
 use DateTime::Format::HTTP;
 use HTTP::Date;
 
-our $VERSION        = '2.7';
+our $VERSION        = '2.8';
 
 our $DateTimeCreate    = 1;
 our $ExtractProgram    = 1;
@@ -225,7 +225,7 @@ sub parse_syslog_line {
     # Host Information:
     if( $raw_string =~ s/$REGEXP{$RegexSet}->{host}//o ) {
         my $hostStr = $1;
-        my($ip) = ($hostStr =~ /($RE{IPv4})/);
+        my($ip) = ($hostStr =~ /($RE{IPv4})/o);
         if( defined $ip && length $ip ) {
             $msg{host_raw} = $hostStr;
             $msg{host} = $ip;
@@ -261,15 +261,14 @@ sub parse_syslog_line {
             $msg{program_raw} = $progStr;
             if( ($msg{program_name}) = ($progStr =~ /$REGEXP{$RegexSet}->{program_name}/o) ) {
                 if (length $msg{program_name} != length $msg{program_raw} ) {
-                    foreach my $var (qw(program_pid program_sub)) {
-                        last if ($msg{$var}) = ($progStr =~ /$REGEXP{$RegexSet}->{$var}/);
-                    }
+                    (($msg{program_pid}) = ($progStr =~ /$REGEXP{$RegexSet}->{program_pid}/o))
+                        || (($msg{program_sub}) = ($progStr =~ /$REGEXP{$RegexSet}->{program_sub}/o))
                 }
             }
         }
     }
     else {
-        $raw_string =~ s/^\s+//o;
+        $raw_string =~ s/^\s+//;
     }
 
     # The left overs should be the message
@@ -335,7 +334,7 @@ Parse::Syslog::Line - Simple syslog line parser
 
 =head1 VERSION
 
-version 2.7
+version 2.8
 
 =head1 SYNOPSIS
 
@@ -544,7 +543,7 @@ Brad Lhotsky <brad@divisionbyzero.net>
 
 =head1 COPYRIGHT AND LICENSE
 
-This software is Copyright (c) 2012 by Brad Lhotsky.
+This software is Copyright (c) 2014 by Brad Lhotsky.
 
 This is free software, licensed under:
 
