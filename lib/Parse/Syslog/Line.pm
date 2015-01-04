@@ -10,7 +10,7 @@ use Const::Fast;
 use DateTime::Format::HTTP;
 use HTTP::Date;
 
-our $VERSION        = '2.8';
+our $VERSION        = '2.9';
 
 our $DateTimeCreate    = 1;
 our $ExtractProgram    = 1;
@@ -334,7 +334,7 @@ Parse::Syslog::Line - Simple syslog line parser
 
 =head1 VERSION
 
-version 2.8
+version 2.9
 
 =head1 SYNOPSIS
 
@@ -543,7 +543,7 @@ Brad Lhotsky <brad@divisionbyzero.net>
 
 =head1 COPYRIGHT AND LICENSE
 
-This software is Copyright (c) 2014 by Brad Lhotsky.
+This software is Copyright (c) 2015 by Brad Lhotsky.
 
 This is free software, licensed under:
 

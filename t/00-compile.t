@@ -2,11 +2,11 @@ use 5.006;
 use strict;
 use warnings;
 
-# this test was generated with Dist::Zilla::Plugin::Test::Compile 2.051
+# this test was generated with Dist::Zilla::Plugin::Test::Compile 2.046
 
-use Test::More;
+use Test::More  tests => 1 + ($ENV{AUTHOR_TESTING} ? 1 : 0);
 
-plan tests => 1 + ($ENV{AUTHOR_TESTING} ? 1 : 0);
+
 
 my @module_files = (
     'Parse/Syslog/Line.pm'
@@ -45,7 +45,6 @@ for my $lib (@module_files)
 
 
 
-is(scalar(@warnings), 0, 'no warnings found')
-    or diag 'got warnings: ', ( Test::More->can('explain') ? Test::More::explain(\@warnings) : join("\n", '', @warnings) ) if $ENV{AUTHOR_TESTING};
+is(scalar(@warnings), 0, 'no warnings found') or diag 'got warnings: ', explain \@warnings if $ENV{AUTHOR_TESTING};
 
 
